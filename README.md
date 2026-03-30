@@ -22,12 +22,32 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## Smarter Scheduling
+
+Phase 3 added four algorithmic improvements to `pawpal_system.py`:
+
+**Sort by time** — `Scheduler.sort_by_time(tasks)`
+Tasks with a `scheduled_time` ("HH:MM") are sorted chronologically using a `datetime.strptime` lambda as the sort key. Tasks without a time sink to the bottom.
+
+**Filter tasks** — `Scheduler.filter_tasks(...)`
+A single-pass filter that accepts any combination of `pet_name`, `priority`, `frequency`, and `completed` status. Only tasks matching every supplied condition are returned.
+
+**Recurring task automation** — `Scheduler.mark_task_complete(pet, task)`
+Marking a task complete automatically creates the next occurrence using `timedelta`: daily tasks reappear tomorrow, weekly tasks reappear in seven days. Tasks with `frequency="as-needed"` do not recur.
+
+**Conflict detection** — `Scheduler.detect_conflicts(tasks)`
+Checks for four types of problems and returns warning strings (never crashes):
+- Total task time exceeds available time
+- Duplicate task titles
+- High-priority task that can never fit in available time
+- Time-slot overlaps between any two tasks (interval overlap formula: `A_start < B_end AND B_start < A_end`)
+
 ## Getting started
 
 ### Setup
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
