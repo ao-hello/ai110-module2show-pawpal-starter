@@ -42,6 +42,32 @@ Checks for four types of problems and returns warning strings (never crashes):
 - High-priority task that can never fit in available time
 - Time-slot overlaps between any two tasks (interval overlap formula: `A_start < B_end AND B_start < A_end`)
 
+## Testing PawPal+
+
+### How to run tests
+
+```bash
+uv run pytest tests/test_pawpal.py -v
+```
+
+### What the tests cover
+
+| Test | What it verifies |
+|------|-----------------|
+| `test_mark_complete_changes_status` | A task's `completed` flag flips to `True` after `mark_complete()` |
+| `test_add_task_increases_pet_task_count` | Adding a task to a pet correctly grows the task list |
+| `test_sort_tasks_by_priority` | Tasks are sorted high → medium → low priority |
+| `test_daily_task_creates_next_occurrence` | Completing a daily task generates a new task dated +1 day |
+| `test_detect_time_slot_conflict` | Overlapping scheduled times produce a conflict warning |
+
+### Confidence Level
+
+⭐⭐⭐⭐✨ 4.5 / 5
+
+All 5 tests pass. Core behaviors — sorting, recurrence, and conflict detection — are verified. Half a star held back because edge cases like zero available time, empty pet task lists, and multi-filter combinations are not yet covered.
+
+---
+
 ## Getting started
 
 ### Setup
